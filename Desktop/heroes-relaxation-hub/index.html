@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heroes Relaxation Hub</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: white;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 🌊 Animated Waves */
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 200px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 1000px 1000px 0 0;
+      animation: waveMove 8s linear infinite;
+      opacity: 0.4;
+    }
+
+    .wave:nth-child(2) {
+      bottom: 10px;
+      opacity: 0.3;
+      animation-duration: 12s;
+    }
+
+    .wave:nth-child(3) {
+      bottom: 20px;
+      opacity: 0.2;
+      animation-duration: 16s;
+    }
+
+    @keyframes waveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+    }
+
+    .hero p {
+      opacity: 0.85;
+      margin-top: 8px;
+    }
+
+    /* CONTAINER */
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* CARD */
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #00c9a7;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00b09b;
+    }
+
+    .quote {
+      margin-top: 10px;
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    #timer {
+      font-size: 28px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      opacity: 0.7;
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🌊 WAVES -->
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+
+  <!-- 🎵 BACKGROUND MUSIC -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a8d7f3.mp3?filename=relaxing-ambient-music-amp-11096.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>🌿 Heroes Relaxation Hub</h1>
+    <p>Relax your mind, breathe deeply, and reset your energy</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="container">
+
+    <div class="card">
+      <h2>🧘 Breathing</h2>
+      <p>Inhale → Hold → Exhale</p>
+      <button onclick="startBreathing()">Start</button>
+      <p id="breathText"></p>
+    </div>
+
+    <div class="card">
+      <h2>⏳ Timer</h2>
+      <button onclick="startTimer()">Start 60s</button>
+      <div id="timer">60</div>
+    </div>
+
+    <div class="card">
+      <h2>✨ Quote</h2>
+      <button onclick="newQuote()">Inspire Me</button>
+      <p class="quote" id="quoteText">Take a deep breath...</p>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2026 Heroes Relaxation Hub | Calm Mind, Strong Life
+  </footer>
+
+  <script>
+    // 🌬️ Breathing
+    function startBreathing() {
+      const text = document.getElementById("breathText");
+      const steps = ["Inhale 🌬️", "Hold ✋", "Exhale 😌"];
+      let i = 0;
+
+      text.innerHTML = steps[i];
+
+      setInterval(() => {
+        i = (i + 1) % steps.length;
+        text.innerHTML = steps[i];
+      }, 4000);
+    }
+
+    // ⏳ Timer
+    function startTimer() {
+      let time = 60;
+      const display = document.getElementById("timer");
+
+      const count = setInterval(() => {
+        time--;
+        display.innerHTML = time;
+
+        if (time <= 0) {
+          clearInterval(count);
+          display.innerHTML = "Done ✅";
+        }
+      }, 1000);
+    }
+
+    // ✨ Quotes
+    const quotes = [
+      "Peace begins with a deep breath.",
+      "You are safe in this moment.",
+      "Let go of what you cannot control.",
+      "Calm mind brings clarity.",
+      "Rest is productive too.",
+      "Breathe in calm, breathe out stress."
+    ];
+
+    function newQuote() {
+      const random = Math.floor(Math.random() * quotes.length);
+      document.getElementById("quoteText").innerHTML = quotes[random];
+    }
+
+    // 🔊 Fix autoplay restriction (user interaction unlock)
+    document.body.addEventListener("click", () => {
+      const music = document.getElementById("bgMusic");
+      music.play();
+    });
+  </script>
+
+</body>
+</html>
